@@ -1,0 +1,19 @@
+{
+   "timezone": "America/Lima",
+   "user": {
+      "active": false,
+      "telegram_id": 123456,
+      "telegram_token": "telegram-token"
+   },
+   "file": {
+      "paths": [
+        
+         ""
+      ]
+   },
+   "dir":{
+      "paths": [
+         ""
+      ]
+   }
+}

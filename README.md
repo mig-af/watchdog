@@ -119,8 +119,8 @@ Si se usa la opcion 1 de instalacion,  el binario precompilado, al iniciar este,
 |---|---|----------|
 | `timezone` | `string` | Zona horaria |
 | `active` | `bool` | true para activar notificaciones en telegram
-| `telegramId` | `int` | Id numerico del usuario de telegram  |
-| `telegramToken` | `string` | Token del bot de telegram |
+| `telegram_id` | `int` | Id numerico del usuario de telegram  |
+| `telegram_token` | `string` | Token del bot de telegram |
 | `paths` | `array`| Lista de rutas de los archivos y carpetas a monitorear en formato string  |
 
 ---

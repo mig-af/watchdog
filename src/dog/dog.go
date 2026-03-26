@@ -10,8 +10,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	_ "time/tzdata"
-	//"os/exec"
 	"time"
 )
 
@@ -19,12 +17,9 @@ import (
 
 
 
-func Analize(file string, timezone string){
+func Analize(file string, timezone *time.Location){
 	
-	loc, er := time.LoadLocation(timezone)
-	if(er != nil){
-		loc = time.Local
-	}
+	
 	
 	fil, _ := os.Stat(file)
 	fileName := file
@@ -35,7 +30,7 @@ func Analize(file string, timezone string){
 		fil , err := os.Stat(fileName)
 		if(err != nil){
 			
-			msg:= fmt.Sprintf("Archivo > %s eliminado o removido, %s", fileName, time.Now().In(loc).Format("2006-01-02 15:04:05"))
+			msg:= fmt.Sprintf("Archivo > %s eliminado o removido, %s", fileName, time.Now().In(timezone).Format("2006-01-02 15:04:05"))
 			telegram.Send(msg)
 			//log.Println("No pude encontrar el archivo", err)
 			
@@ -45,7 +40,7 @@ func Analize(file string, timezone string){
 		}else{
 			if (last != fil.ModTime()){
 				//log.Printf("Se modifico el archivo..%s", string(fileName))
-				msg := fmt.Sprintf("%s Se modifico >> %s", string(fil.ModTime().In(loc).Format("2006-01-02 15:04:05")),string(fileName))
+				msg := fmt.Sprintf("%s Se modifico >> %s", string(fil.ModTime().In(timezone).Format("2006-01-02 15:04:05")),string(fileName))
 				fmt.Println(msg)
 				telegram.Send(msg)
 				last = fil.ModTime()

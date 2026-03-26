@@ -11,6 +11,7 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	_ "time/tzdata"
 )
 
 
@@ -34,23 +35,25 @@ func main(){
 	ch := make(chan os.Signal, 1) //channel
 
 	json := dog.ReadDocs()
+
+
 	var timezone string = json.Timezone
+	location, er := time.LoadLocation(timezone)
+	if(er != nil){
+		location = time.Local
+	}
+
 
 
 
 	files, errFile := dog.GetFiles(json.File.Paths)
 	InfoDirFiles, errDir := dog.GetFilesFromDir(json.Dir.Paths)
-	
-
 	if(errFile != nil){fmt.Println(errFile.Error())}
 	if(errDir != nil){fmt.Println(errDir.Error())}
-	//fmt.Println(len(files))
-	//fmt.Println(len(dirsFiles))
-	//fmt.Println(InfoFiles.Files)
 	
 
-	time.Sleep(2 * time.Second)
-	//funcs.Cmd("clear")
+	time.Sleep(4 * time.Second)
+	funcs.Cmd("clear")
 	filesToAnalize = funcs.ListCleaner(append(InfoDirFiles.Files, files...))
 
 
@@ -93,19 +96,19 @@ func main(){
 
 
 	for i:=0 ; i<len(filesToAnalize);i++{
-		go dog.Analize(filesToAnalize[i], timezone)
+		go dog.Analize(filesToAnalize[i], location)
 
 	}
 	
 	for carpeta:=0 ; carpeta <len(InfoDirFiles.Dirs); carpeta ++{
-		go dog.Analize(InfoDirFiles.Dirs[carpeta], timezone)
+		go dog.Analize(InfoDirFiles.Dirs[carpeta], location)
 	}
 
 
 
-	si := <- ch 
+	exit := <- ch 
 	
-	fmt.Println("Programa cerrado", si)
+	fmt.Println("Programa cerrado", exit)
 	//select{}
 	
 }
